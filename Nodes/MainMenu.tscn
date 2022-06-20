@@ -1,0 +1,116 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/MainMenu.cs" type="Script" id=1]
+[ext_resource path="res://swansea-font/Swansea-q3pd.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 20
+font_data = ExtResource( 2 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Start" type="Button" parent="."]
+anchor_left = 0.1
+anchor_top = 0.8
+anchor_right = 0.2
+anchor_bottom = 0.9
+custom_fonts/font = SubResource( 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Exit" type="Button" parent="."]
+anchor_left = 0.8
+anchor_top = 0.8
+anchor_right = 0.9
+anchor_bottom = 0.9
+custom_fonts/font = SubResource( 2 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="FieldSize" type="HSlider" parent="."]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.3
+anchor_bottom = 0.2
+min_value = 3.0
+max_value = 10.0
+value = 3.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="FieldSize"]
+custom_fonts/font = SubResource( 3 )
+text = "Field size"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ShipNum" type="HSlider" parent="."]
+anchor_left = 0.1
+anchor_top = 0.2
+anchor_right = 0.3
+anchor_bottom = 0.3
+min_value = 1.0
+max_value = 50.0
+value = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="ShipNum"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 4 )
+text = "Ships amount
+"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HideEnemies" type="CheckBox" parent="."]
+anchor_left = 0.1
+anchor_top = 0.3
+anchor_right = 0.3
+anchor_bottom = 0.4
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="HideEnemies"]
+custom_fonts/font = SubResource( 5 )
+text = "Hide Enemies"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[connection signal="button_up" from="Start" to="." method="OnStartButtonUp"]
+[connection signal="button_up" from="Exit" to="." method="OnExitButtonUp"]
+[connection signal="value_changed" from="FieldSize" to="." method="OnFieldSizeValueChanged"]
+[connection signal="value_changed" from="ShipNum" to="." method="OnShipNumValueChanged"]

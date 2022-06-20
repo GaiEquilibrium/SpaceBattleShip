@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Nodes/GridNode.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/CameraControl.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/LineDrawer.cs" type="Script" id=3]
+[ext_resource path="res://Nodes/GridDrawer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/ShootDrawer.cs" type="Script" id=5]
+[ext_resource path="res://Scripts/PlayerControlledFleet.cs" type="Script" id=6]
+[ext_resource path="res://Scripts/ObjectMouseHandler.cs" type="Script" id=7]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 500, 0, 500 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 1000, 1000, 0 )
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_unshaded = true
+flags_disable_ambient_light = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+flags_disable_ambient_light = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[node name="PlayerFleet" type="Spatial"]
+script = ExtResource( 6 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5 )
+script = ExtResource( 2 )
+
+[node name="BaseGridHorizontal" parent="." instance=ExtResource( 4 )]
+GridColor = Color( 0.411765, 0.411765, 0.411765, 1 )
+UseOffset = true
+
+[node name="BaseGridVertical" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1 )
+GridColor = Color( 0.411765, 0.411765, 0.411765, 1 )
+UseOffset = true
+
+[node name="LocalGridHorizontal" type="Spatial" parent="."]
+script = ExtResource( 7 )
+
+[node name="GridDrawer" parent="LocalGridHorizontal" instance=ExtResource( 4 )]
+skeleton = NodePath("../..")
+
+[node name="Area" type="Area" parent="LocalGridHorizontal"]
+
+[node name="CollisionShape" type="CollisionShape" parent="LocalGridHorizontal/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 499.5, 0, 499.5 )
+shape = SubResource( 1 )
+
+[node name="VerticalCoordinatePlane" type="Spatial" parent="."]
+script = ExtResource( 7 )
+
+[node name="Area" type="Area" parent="VerticalCoordinatePlane"]
+
+[node name="CollisionShape" type="CollisionShape" parent="VerticalCoordinatePlane/Area"]
+shape = SubResource( 2 )
+
+[node name="HorizontalGridNodeMain" parent="." instance=ExtResource( 1 )]
+
+[node name="HorizontalGridNodeAdditional" parent="." instance=ExtResource( 1 )]
+
+[node name="NewTarget" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5 )
+
+[node name="CurrentTarget" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5 )
+
+[node name="LineDrawer" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 3 )
+script = ExtResource( 3 )
+
+[node name="ShootDrawer" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 4 )
+script = ExtResource( 5 )
+
+[connection signal="Clicked" from="LocalGridHorizontal" to="." method="OnLocalGridHorizontalClicked"]
+[connection signal="input_event" from="LocalGridHorizontal/Area" to="LocalGridHorizontal" method="OnAreaInputEvent"]
+[connection signal="mouse_entered" from="LocalGridHorizontal/Area" to="LocalGridHorizontal" method="OnAreaMouseEntered"]
+[connection signal="mouse_exited" from="LocalGridHorizontal/Area" to="LocalGridHorizontal" method="OnAreaMouseExited"]
+[connection signal="Clicked" from="VerticalCoordinatePlane" to="." method="OnVerticalCoordinatePlaneClicked"]
+[connection signal="input_event" from="VerticalCoordinatePlane/Area" to="VerticalCoordinatePlane" method="OnAreaInputEvent"]
+[connection signal="mouse_entered" from="VerticalCoordinatePlane/Area" to="VerticalCoordinatePlane" method="OnAreaMouseEntered"]
+[connection signal="mouse_exited" from="VerticalCoordinatePlane/Area" to="VerticalCoordinatePlane" method="OnAreaMouseExited"]
+[connection signal="Clicked" from="CurrentTarget" to="." method="OnCurrentTargetClicked"]
